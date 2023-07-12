@@ -1,9 +1,11 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import { useContext, useEffect } from 'react';
+import { Pressable } from 'react-native';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
+import { Link, SplashScreen, Stack } from 'expo-router';
+
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+import { Context, ContextProvider } from '@/context';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -12,7 +14,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'index',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -43,14 +45,64 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
+  const { setLoggedInUser } = useContext(Context);
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ContextProvider>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        <Stack.Screen name='index' options={{ headerShown: false }} />
+        <Stack.Screen
+          name='posts'
+          options={{
+            headerTitle: 'Posts de la API',
+          }}
+        />
+        <Stack.Screen
+          name='employees'
+          options={{
+            headerTitle: 'Lista de empleados',
+            headerRight: () => (
+              <Link href='/' asChild onPress={() => setLoggedInUser('')}>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name='sign-out'
+                      size={25}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name='modal'
+          options={{
+            headerTitle: 'Agregar nuevo empleado',
+            presentation: 'modal',
+          }}
+        />
+        <Stack.Screen
+          name='profile'
+          options={{
+            headerTitle: 'Perfil',
+            headerRight: () => (
+              <Link href='/' asChild onPress={() => setLoggedInUser('')}>
+                <Pressable>
+                  {({ pressed }) => (
+                    <FontAwesome
+                      name='sign-out'
+                      size={25}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
       </Stack>
-    </ThemeProvider>
+    </ContextProvider>
   );
 }
