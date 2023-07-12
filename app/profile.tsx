@@ -1,25 +1,23 @@
 import { useContext } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { Image } from 'react-native';
 
-import { View } from '@/components/Themed';
+import Container from '@/components/Container';
+import Title from '@/components/Typography';
+
 import { Context } from '@/context';
 
 export default function ProfileScreen() {
   const { loggedInUser } = useContext(Context);
 
   return (
-    <View style={styles.container}>
-      <View>
-        <Text>Bienvenidx, {loggedInUser}</Text>
-      </View>
-    </View>
+    <Container>
+      <Title>Bienvenidx a tu perfil, {loggedInUser}.</Title>
+      <Image
+        style={{ width: '100%', height: '50%' }}
+        source={{
+          uri: 'https://media.tenor.com/QaPEi-tcFXQAAAAC/gato-besando-a-la-camara.gif',
+        }}
+      />
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 32,
-  },
-});

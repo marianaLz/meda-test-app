@@ -1,8 +1,11 @@
-import { useContext, useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import React, { useContext, useState } from 'react';
 import { useRouter } from 'expo-router';
 
-import { Button, View } from '@/components/Themed';
+import Container from '@/components/Container';
+import Divider from '@/components/Divider';
+import Input from '@/components/Input';
+import PrimaryButton, { SecondaryButton } from '@/components/Buttons';
+
 import { Context, Employee } from '@/context';
 
 export default function HomeScreen() {
@@ -56,72 +59,46 @@ export default function HomeScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
+    <Container>
+      <PrimaryButton
         disabled={employeeLogin}
         onPress={handleLoginAsCompany}
         title='Login empresa'
       />
-      <Button
+      <PrimaryButton
+        backgroundColor='#262A56'
         disabled={companyLogin}
         onPress={handleLoginAsEmployee}
         title='Login empleado'
       />
-      <Button
+      <PrimaryButton
+        backgroundColor='#000'
         disabled={companyLogin || employeeLogin}
         onPress={() => router.push('/posts')}
         title='Ver posts'
       />
 
       {isLogin && (
-        <View>
-          <View
-            style={styles.separator}
-            lightColor='#eee'
-            darkColor='rgba(255,255,255,0.1)'
-          />
-          <TextInput
-            style={styles.input}
+        <React.Fragment>
+          <Divider marginVertical={30} />
+          <Input
             placeholder='Nombre de usuario'
             value={username}
             onChangeText={(text) => setUsername(text)}
           />
-          <TextInput
-            style={styles.input}
+          <Input
             placeholder='Contraseña'
             secureTextEntry
             value={password}
             onChangeText={(text) => setPassword(text)}
           />
-          <Button
+          <PrimaryButton
             title='Iniciar sesión'
             onPress={companyLogin ? loginAsCompany : loginAsEmployee}
           />
-          <Button title='Cancelar' onPress={handleClear} />
-        </View>
+          <SecondaryButton title='Cancelar' onPress={handleClear} />
+        </React.Fragment>
       )}
-    </View>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 32,
-  },
-  input: {
-    width: '100%',
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'gray',
-    marginBottom: 16,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '100%',
-  },
-});

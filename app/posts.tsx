@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 
-import { Text, View } from '@/components/Themed';
+import Container from '@/components/Container';
+import Divider from '@/components/Divider';
+import Title from '@/components/Typography';
 
 type Post = {
   body: string;
@@ -34,43 +36,18 @@ export default function PostsScreen() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <Container>
       <FlatList
         data={posts}
-        style={styles.list}
         renderItem={({ item }: PostItem) => (
           <View>
-            <Text style={styles.title}>{item.title}</Text>
+            <Title>{item.title}</Title>
             <Text>{item.body}</Text>
-            <View
-              style={styles.separator}
-              lightColor='#eee'
-              darkColor='rgba(255,255,255,0.1)'
-            />
+            <Divider />
           </View>
         )}
         keyExtractor={(_, index) => index.toString()}
       />
-    </View>
+    </Container>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  list: {
-    paddingHorizontal: 32,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 20,
-  },
-  separator: {
-    marginTop: 20,
-    height: 1,
-    width: '100%',
-  },
-});
